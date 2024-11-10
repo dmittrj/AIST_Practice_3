@@ -23,6 +23,13 @@
             <label for="slider-area">5</label>
             <label><span class="current-value" id="area-current-value">1</span></label>
         </div>
+        <div class="tools-slider">
+            <h3>Отрисовывать кадр</h3>
+            <label for="slider-frame">1</label>
+            <input type="range" id="slider-area" name="slider-frame" min="1" max="100" step="1" value="1" oninput="e_inputing('frame', this.value)" onchange="e_change('frame', this.value)">
+            <label for="slider-frame">100</label>
+            <label><span class="current-value" id="frame-current-value">1</span></label>
+        </div>
         <button onclick="start_simulating()">Начать симуляцию</button>
         <h3>Несчастных на поле: <span id="unhappy-count"></span></h3>
     </div>

@@ -3,10 +3,11 @@ var field = {
     "height" : 25
 };
 
-var reds_percent = 40;
-var blues_percent = 40;
+var reds_percent = 45;
+var blues_percent = 45;
 var min_same_neighbours = 2;
 var view_area = 1;
+var render_frame = 1;
 
 var interval = 0;
 
@@ -157,18 +158,24 @@ function e_inputing(t, val) {
 function e_change(t, val) {
     if (t == 'happy') {
         min_same_neighbours = val;
-    } else {
+    } else if (t == 'area') {
         view_area = val;
         document.getElementById('slider-neighbours').max = `${(1+ 2*val) * (1+ 2*val) - 1}`
         document.getElementById('happy-max').innerText = `${(1+ 2*val) * (1+ 2*val) - 1}`
+    } else {
+        render_frame = val;
     }
 }
 
 function start_simulating() {
+    let frame = 0;
     interval = setInterval(() => {
         move_random_unhappy_agent();
-        calculate_happiness();
-        draw_agents();
+        let happys = calculate_happiness();
+        if (frame * happys === 0) {
+            draw_agents();
+        }
+        frame = (frame + 1) % render_frame;
     }, 50);
 }
 
@@ -176,6 +183,12 @@ window.addEventListener("DOMContentLoaded", () => {
     let w = document.querySelector('body').getBoundingClientRect();
     field["width"] = Math.floor(w.width / 20);
     field["height"] = Math.floor(w.height / 20);
+    if (field["width"] > field["height"]) {
+        field["width"] = field["height"];
+    }
+    if (field["width"] < field["height"]) {
+        field["height"] = field["width"];
+    }
     build_field();
     agents = createAgentsArray();
     calculate_happiness();

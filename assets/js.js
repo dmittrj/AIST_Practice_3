@@ -80,7 +80,7 @@ function find_random_space() {
     return null;
 }
 
-function calculate_happiness() {
+function calculate_happiness(frame_all) {
     let counter = 0
     for (const agent of agents) {
         agent.Unhappy = true;
@@ -103,7 +103,7 @@ function calculate_happiness() {
         }
         counter += agent.Unhappy ? 1 : 0;
     }
-    document.getElementById('unhappy-count').innerText = `${counter} (${Math.round(counter * 100 / agents.length)}%)`;
+    document.getElementById('unhappy-count').innerText = `${counter} (${Math.round(counter * 100 / agents.length)}%), шаг ${frame_all}`;
     return counter;
 }
 
@@ -169,12 +169,14 @@ function e_change(t, val) {
 
 function start_simulating() {
     let frame = 0;
+    let frame_all = 0;
     interval = setInterval(() => {
         move_random_unhappy_agent();
-        let happys = calculate_happiness();
+        let happys = calculate_happiness(frame_all);
         if (frame * happys === 0) {
             draw_agents();
         }
+        frame_all += 1;
         frame = (frame + 1) % render_frame;
     }, 50);
 }
